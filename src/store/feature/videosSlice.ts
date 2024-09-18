@@ -9,25 +9,37 @@ interface IVideo {
 }
 
 interface IVideoSlice {
-  isLoading: boolean;
-  isError: boolean;
+  isLoadingGetVideos: boolean;
+  isErrorGetVideos: boolean;
+
+  isLoadingCreateVideos: boolean;
+  isErrorCreateVideos: boolean;
+
+  isErrorMessage: string[];
   videos: IVideo[];
+
+
+}
+
+interface IDataVideo {
+  title: string;
+  description: string;
 }
 
 export const createVideo = createAsyncThunk(
   "videos/createVideo",
-  async (data, { rejectWithValue }) => {
+  async (data: IDataVideo, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        "http://localhost:4200/api/videos"
-        // {
-        //   title: data.title,
-        //   description: data.description,
-        // }
-      );
+      const response = await axios.post("http://localhost:4200/api/videos", {
+        title: data.title,
+        description: data.description,
+      });
 
-      //   return response.data;
-    } catch (error) {
+      return response.data;
+    } catch (error: any) {
+      if (error.status === 400) {
+        return rejectWithValue(error.response.data.message);
+      }
       return rejectWithValue(error);
     }
   }
@@ -46,9 +58,15 @@ export const getAllVideos = createAsyncThunk(
 );
 
 const initialState: IVideoSlice = {
-  isLoading: false,
-  isError: false,
+  isLoadingGetVideos: false,
+  isErrorGetVideos: false,
+
+  isLoadingCreateVideos: false,
+  isErrorCreateVideos: false,
+
+  isErrorMessage: [],
   videos: [],
+
 };
 
 export const VideosSlice = createSlice({
@@ -57,27 +75,37 @@ export const VideosSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     // CREATE
-    // builder.addCase(createVideo.pending, (state) => {
-    //   state.isLoading = true;
-    // });
-    // builder.addCase(createVideo.fulfilled, (state, action: any) => {
-    //   state.isLoading = false;
-    //     // state.videos.push(action.payload.videos);
-    // });
-    // builder.addCase(createVideo.rejected, (state) => {
-    //   state.isLoading = false;
-    //   state.isError = true;
-    // });
+    builder.addCase(createVideo.pending, (state) => {
+      state.isLoadingCreateVideos = true;
+      
+    });
+    builder.addCase(createVideo.fulfilled, (state, action: any) => {
+      state.isLoadingCreateVideos = false;
+      state.isErrorCreateVideos = false;
+      state.videos.push(action.payload.video);
+      
+    });
+    builder.addCase(createVideo.rejected, (state, action: any) => {
+      state.isErrorCreateVideos = true;
+      state.isErrorMessage = [];
+      if (action.payload.status === 404) {
+        state.isErrorMessage = [];
+      } else {
+        state.isErrorMessage = [...state.isErrorMessage, ...action.payload];
+      }
+      state.isLoadingCreateVideos = false;
+
+    });
     // getALL
     builder.addCase(getAllVideos.pending, (state) => {
-      state.isLoading = true;
+      state.isLoadingGetVideos = true;
     });
     builder.addCase(getAllVideos.fulfilled, (state, action) => {
       state.videos = action.payload;
-      state.isLoading = false;
+      state.isLoadingGetVideos = false;
     });
     builder.addCase(getAllVideos.rejected, (state) => {
-      state.isError = true;
+      state.isErrorGetVideos = true;
     });
   },
 });

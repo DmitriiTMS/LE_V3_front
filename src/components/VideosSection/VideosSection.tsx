@@ -1,20 +1,10 @@
-import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/hook-redux";
-import { getAllVideos } from "../../store/feature/videosSlice";
-
 import { Video } from "../Video";
 
 import { Accordion } from "react-bootstrap";
+import { useGetAll } from "../../query/videos/useGetAll";
 
 export const VideosSection = () => {
-  const dispatch = useAppDispatch();
-  const { videos, isLoading, isError } = useAppSelector(
-    (state) => state.videos
-  );
-
-  useEffect(() => {
-    dispatch(getAllVideos());
-  }, []);
+  const { videos, isLoading, isError } = useGetAll();
 
   if (isError) return <div>Упс!!! Что-то пошло не так!!!</div>;
   if (isLoading) return <div>...Loading</div>;
