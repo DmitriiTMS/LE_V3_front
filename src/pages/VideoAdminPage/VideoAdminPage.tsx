@@ -24,7 +24,7 @@ export const VideoAdminPage = () => {
             <Modal.Title>Создание видео</Modal.Title>
           </Modal.Header>
 
-          <FormCreateVideo handleClose={handleClose} />
+          <FormCreateVideo handleClose={handleClose}/>
         </Modal>
       </div>
 
