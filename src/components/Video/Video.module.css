@@ -1,0 +1,12 @@
+.img-block {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+}
+
+.img-block video {
+    width: 100%;
+    height: 400px;
+    object-fit: contain;
+    object-position: center;
+}

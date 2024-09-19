@@ -19,6 +19,8 @@ export const getAllVideos = async () => {
 };
 
 export const createVideo = async (data: any) => {
-  const response = await axiosInstance.post("videos", data); 
+  const response = await axiosInstance.post("videos", data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
   return response.data;
 };

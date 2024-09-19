@@ -10,7 +10,7 @@ interface IFormCreateVideo {
 interface IInputsForm {
   title: string;
   description: string;
-  url: string;
+  url: any;
 }
 
 export const FormCreateVideo: FC<IFormCreateVideo> = ({ handleClose }) => {
@@ -27,14 +27,17 @@ export const FormCreateVideo: FC<IFormCreateVideo> = ({ handleClose }) => {
   });
 
   const onSubmit: SubmitHandler<IInputsForm> = (data) => {
-    mutate(data);
+    mutate({ ...data, url: data.url[0] });
   };
 
   useEffect(() => {
     let timeout = setTimeout(() => {
       setClickCreateBtn(false);
 
-      if (!errors.title?.message && !errors.description?.message) {
+      if (
+        (!errors.title?.message && !errors.description?.message) &&
+        !errors.url?.message
+      ) {
         if (clickCreateBtn) {
           if (!isError) {
             handleClose();
@@ -102,9 +105,20 @@ export const FormCreateVideo: FC<IFormCreateVideo> = ({ handleClose }) => {
           </Form.Text>
         )}
       </Form.Group>
-      {/* <Form.Group className="mb-3">
-        <Form.Control type="file" {...register("url")} />
-      </Form.Group> */}
+      <Form.Group className="mb-3">
+        <Form.Control
+          type="file"
+          {...register("url", {
+            required: {
+              value: true,
+              message: "Поле должно быть заполнено",
+            },
+          })}
+        />
+        {errors.url?.message && (
+          <Form.Text className="text-danger">Выберите файл</Form.Text>
+        )}
+      </Form.Group>
       <Button
         variant="primary"
         type="submit"
