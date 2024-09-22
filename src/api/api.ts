@@ -24,3 +24,8 @@ export const createVideo = async (data: any) => {
   });
   return response.data;
 };
+
+export const deleteVideo = async (id: string) => {
+  const response = await axiosInstance.delete(`videos/${id}`);
+  return response.data;
+};

@@ -1,9 +1,11 @@
 import { FC } from "react";
 import { Button } from "react-bootstrap";
 
-import styles from './TableVideoRow.module.css';
+import styles from "./TableVideoRow.module.css";
+import { useDeleteVideo } from "../../query/videos/useDelete";
 
 interface IVideoRow {
+  id?: string;
   title: string;
   description: string;
   url: string;
@@ -15,27 +17,47 @@ export const TableVideoRow: FC<IVideoRow> = ({
   description,
   url,
   index,
+  id,
 }) => {
+  const { mutate, isError, isPending } = useDeleteVideo();
+
+  const deleteVideo = () => {
+    if (id) {
+      mutate(id);
+    }
+  };
+
+  {
+    isPending && <div>Loading...</div>;
+  }
+  {
+    isError && <div>Упс!!! При удалении что-то пошло не так!!!</div>;
+  }
+
   return (
-    <tr>
-      <td>{index + 1}</td>
-      <td>{title}</td>
-      <td>{description}</td>
-      <td className={styles['td-flex']}>
-        <div className={styles["img-block"]}>
-          <video
-            src={`http://localhost:4200/${url}`}
-            controls
-            autoPlay={false}
-          />
-        </div>
-      </td>
-      <td>
-        <Button variant="warning" className="mx-4">
-          Редактировать
-        </Button>
-        <Button variant="danger">Удалить</Button>
-      </td>
-    </tr>
+    <>
+      <tr>
+        <td>{index + 1}</td>
+        <td>{title}</td>
+        <td>{description}</td>
+        <td className={styles["td-flex"]}>
+          <div className={styles["img-block"]}>
+            <video
+              src={`http://localhost:4200/${url}`}
+              controls
+              autoPlay={false}
+            />
+          </div>
+        </td>
+        <td>
+          <Button variant="warning" className="mx-4">
+            Редактировать
+          </Button>
+          <Button variant="danger" onClick={deleteVideo}>
+            Удалить
+          </Button>
+        </td>
+      </tr>
+    </>
   );
 };
