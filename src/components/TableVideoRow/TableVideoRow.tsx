@@ -1,8 +1,9 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Button } from "react-bootstrap";
 
 import styles from "./TableVideoRow.module.css";
 import { useDeleteVideo } from "../../query/videos/useDelete";
+import { ModalUpdate } from "../ModalUpdate";
 
 interface IVideoRow {
   id?: string;
@@ -27,6 +28,13 @@ export const TableVideoRow: FC<IVideoRow> = ({
     }
   };
 
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+
+  const handleShow = () => {
+    setShow(true);
+  };
+
   {
     isPending && <div>Loading...</div>;
   }
@@ -36,6 +44,17 @@ export const TableVideoRow: FC<IVideoRow> = ({
 
   return (
     <>
+      {show && (
+        <ModalUpdate
+          show={show}
+          handleClose={handleClose}
+          title={title}
+          description={description}
+          url={url}
+          id={id}
+        />
+      )}
+
       <tr>
         <td>{index + 1}</td>
         <td>{title}</td>
@@ -50,7 +69,7 @@ export const TableVideoRow: FC<IVideoRow> = ({
           </div>
         </td>
         <td>
-          <Button variant="warning" className="mx-4">
+          <Button variant="warning" className="mx-4" onClick={handleShow}>
             Редактировать
           </Button>
           <Button variant="danger" onClick={deleteVideo}>

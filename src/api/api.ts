@@ -25,6 +25,13 @@ export const createVideo = async (data: any) => {
   return response.data;
 };
 
+export const updateVideo = async (id: string, data: any) => {
+  const response = await axiosInstance.patch(`videos/${id}`, data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return response.data;
+};
+
 export const deleteVideo = async (id: string) => {
   const response = await axiosInstance.delete(`videos/${id}`);
   return response.data;

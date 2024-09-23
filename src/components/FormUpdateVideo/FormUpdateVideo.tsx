@@ -1,11 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { useCreateVideo } from "../../query/videos/useCreate";
 import { SubmitHandler, useForm } from "react-hook-form";
-
-interface IFormCreateVideo {
-  handleClose: () => void;
-}
+import { useUpdateVideo } from "../../query/videos/useUpdate";
 
 interface IInputsForm {
   title: string;
@@ -13,10 +9,24 @@ interface IInputsForm {
   url: any;
 }
 
-export const FormCreateVideo: FC<IFormCreateVideo> = ({ handleClose }) => {
+interface IUpdate {
+  title: string;
+  description: string;
+  url: string;
+  id?: string;
+  handleClose: () => void;
+}
+
+export const FormUpdateVideo: FC<IUpdate> = ({
+  title,
+  description,
+  url,
+  id,
+  handleClose,
+}) => {
   const [clickCreateBtn, setClickCreateBtn] = useState(false);
 
-  const { mutate, isError, isPending, errorStatusCode } = useCreateVideo();
+  const { mutate, isError, isPending } = useUpdateVideo(id!);
 
   const {
     register,
@@ -25,7 +35,6 @@ export const FormCreateVideo: FC<IFormCreateVideo> = ({ handleClose }) => {
   } = useForm<IInputsForm>({
     mode: "onChange",
   });
-
   const onSubmit: SubmitHandler<IInputsForm> = (data) => {
     mutate({ ...data, url: data.url[0] });
   };
@@ -51,7 +60,6 @@ export const FormCreateVideo: FC<IFormCreateVideo> = ({ handleClose }) => {
       clearTimeout(timeout);
     };
   });
-
   return (
     <Form className="p-3" onSubmit={handleSubmit(onSubmit)}>
       <Form.Group className="mb-3">
@@ -59,6 +67,7 @@ export const FormCreateVideo: FC<IFormCreateVideo> = ({ handleClose }) => {
           type="text"
           placeholder="LamiEra введите название видео"
           {...register("title", {
+            value: title,
             required: {
               value: true,
               message: "Поле должно быть заполнено",
@@ -85,6 +94,7 @@ export const FormCreateVideo: FC<IFormCreateVideo> = ({ handleClose }) => {
           rows={3}
           placeholder="LamiEra введите описание видео"
           {...register("description", {
+            value: description,
             required: {
               value: true,
               message: "Поле должно быть заполнено",
@@ -125,17 +135,13 @@ export const FormCreateVideo: FC<IFormCreateVideo> = ({ handleClose }) => {
         type="submit"
         onClick={() => setClickCreateBtn(true)}
       >
-        Создать
+        Обновить
       </Button>
       {isPending && <div>...Loading</div>}
 
-      {isError && errorStatusCode === 400 && (
-        <div>Упс!!! Что-то пошло не так при создании видео!!!</div>
-      )}
+      {isError && <div>Упс!!! Что-то пошло не так при создании видео!!!</div>}
 
-      {isError && errorStatusCode === 409 && (
-        <div>Упс!!! Видео с таким названием уже существует</div>
-      )}
+      {isError && <div>Упс!!! Видео с таким названием уже существует</div>}
     </Form>
   );
 };
