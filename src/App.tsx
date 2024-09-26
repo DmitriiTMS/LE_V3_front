@@ -9,6 +9,7 @@ import {
   RegisterPage,
   VideoPage,
   UsersAdminPage,
+  ProtectedPage,
 } from "./lazy/lazy";
 import { paths, pathsManage } from "./constants/paths";
 
@@ -19,14 +20,42 @@ function App() {
         <Routes>
           <Route path={paths.home} element={<Layout />}>
             <Route index element={<HomePage />} />
-            <Route path={paths.videos} element={<VideoPage />} />
-            <Route path={paths.login} element={<LoginPage />} />
-            <Route path={paths.register} element={<RegisterPage />} />
-            <Route path={paths.manage} element={<LayoutAdmin />}>
+            <Route
+              path={paths.videos}
+              element={
+                <ProtectedPage>
+                  <VideoPage />
+                </ProtectedPage>
+              }
+            />
+            <Route
+              path={paths.manage}
+              element={
+                <ProtectedPage>
+                  <LayoutAdmin />
+                </ProtectedPage>
+              }
+            >
               <Route path={pathsManage.videos} element={<VideoAdminPage />} />
               <Route path={pathsManage.users} element={<UsersAdminPage />} />
             </Route>
           </Route>
+          <Route
+            path={paths.login}
+            element={
+              <ProtectedPage>
+                <LoginPage />
+              </ProtectedPage>
+            }
+          />
+          <Route
+            path={paths.register}
+            element={
+              <ProtectedPage>
+                <RegisterPage />
+              </ProtectedPage>
+            }
+          />
         </Routes>
       </Suspense>
     </>

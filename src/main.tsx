@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "./store/store.ts";
+import { Toaster } from "react-hot-toast";
 
 import App from "./App.tsx";
 
@@ -16,8 +17,9 @@ const queryClient = new QueryClient({
     queries: {
       retry: 2,
       retryDelay: 1000,
-    }
-  }
+      // refetchOnWindowFocus: false,
+    },
+  },
 });
 
 createRoot(document.getElementById("root")!).render(
@@ -26,6 +28,9 @@ createRoot(document.getElementById("root")!).render(
       <Provider store={store}>
         <BrowserRouter>
           <App />
+          <Toaster position="bottom-left" reverseOrder={false} toastOptions={{
+            duration: 3000
+          }} />
         </BrowserRouter>
       </Provider>
     </QueryClientProvider>

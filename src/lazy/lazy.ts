@@ -26,5 +26,9 @@ export const UsersAdminPage = lazy(() =>
   import("../pages/UsersAdminPage").then(({ UsersAdminPage }) => ({ default: UsersAdminPage }))
 );
 
+export const ProtectedPage = lazy(() =>
+  import("../components/ProtectedPage").then(({ ProtectedPage }) => ({ default: ProtectedPage }))
+);
+
 
 
