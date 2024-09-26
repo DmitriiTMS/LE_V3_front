@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { paths, pathsManage } from "../../constants/paths";
 import { Button } from "react-bootstrap";
-import { useProfile } from "../../query/users/UseProfile";
+import { useProfile } from "../../query/users/useProfile";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 
@@ -25,7 +25,7 @@ export const Navigation = () => {
     } else {
       setAuth(false);
     }
-  }, [localStorage.getItem('user')]);
+  }, [localStorage.getItem("user")]);
 
   return (
     <>
@@ -40,6 +40,12 @@ export const Navigation = () => {
             </li>
           )}
 
+          {user?.role === "ADMIN" && auth && (
+            <li>
+              <Link to={`${paths.manage}/${pathsManage.videos}`}>Админ</Link>
+            </li>
+          )}
+
           {!auth ? (
             <li>
               <Link to={paths.login}>Вход</Link>
@@ -48,12 +54,6 @@ export const Navigation = () => {
             <Button variant="danger" onClick={logout}>
               Выйти
             </Button>
-          )}
-
-          {user?.role === "ADMIN" && auth && (
-            <li>
-              <Link to={`${paths.manage}/${pathsManage.videos}`}>Админ</Link>
-            </li>
           )}
         </ul>
       </nav>

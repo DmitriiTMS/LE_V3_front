@@ -2,14 +2,16 @@ import { Video } from "../Video";
 
 import { Accordion } from "react-bootstrap";
 import { useGetAll } from "../../query/videos/useGetAll";
+import { useProfile } from "../../query/users/useProfile";
 
 export const VideosSection = () => {
+  const { user } = useProfile();
   const { videos, isLoading, isError } = useGetAll();
 
   if (isError) return <div>Упс!!! Что-то пошло не так!!!</div>;
   if (isLoading) return <div>...Loading</div>;
 
-  return (
+  return user && user.isHasPremium ? (
     <div>
       <Accordion defaultActiveKey={["0"]} alwaysOpen>
         {videos && videos.length > 0 ? (
@@ -21,6 +23,7 @@ export const VideosSection = () => {
                 title={video.title}
                 description={video.description}
                 url={video.url}
+                id={""}
               />
             );
           })
@@ -29,5 +32,7 @@ export const VideosSection = () => {
         )}
       </Accordion>
     </div>
+  ) : (
+    <div>Дождитесь подтверждения оплаты</div>
   );
 };

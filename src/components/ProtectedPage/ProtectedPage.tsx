@@ -11,17 +11,18 @@ export const ProtectedPage = ({ children }: any) => {
 
   useEffect(() => {
     const token = Cookies.get("accessToken");
-    if (
-      !token &&
-      (location.pathname === "/login" || location.pathname === "/register")
-    ) {
-      setLogin(false);
-    } else if (token) {
-      setLogin(true);
-      setAuth(true);
-      navigate("/");
+    const pathName = location.pathname === "/login" || location.pathname === "/register";
+   
+    if(pathName && !token) {
+      setLogin(false)
+    } else if(token && pathName) {
+      setLogin(true)
+      setAuth(true)
+      navigate('/')
     }
   }, [navigate, location.pathname]);
 
-  return auth || !login ? <div>{children}</div> : null;
+
+ 
+  return !login || auth ? <div>{children}</div> : null;
 };

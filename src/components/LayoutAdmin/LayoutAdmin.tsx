@@ -1,7 +1,15 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { NavigationManage } from "../NavigationManage";
+import { useProfile } from "../../query/users/useProfile";
 
 export const LayoutAdmin = () => {
+  const { user } = useProfile();
+
+
+if(user && user?.role !== "ADMIN") {
+  return <Navigate to='/' replace/>
+}
+
   return (
     <div>
       <div>
