@@ -13,11 +13,11 @@ export const useProfile = () => {
     }
   }, []);
 
-  const { data: user, isLoading } = useQuery({
+  const { data: user } = useQuery({
     queryKey: ["profile"],
     queryFn: () => getProfileUser(),
     enabled: auth ? true : false,
   });
 
-  return { user, isLoading };
+  return { user };
 };

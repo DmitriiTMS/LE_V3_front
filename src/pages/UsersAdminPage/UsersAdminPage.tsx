@@ -1,6 +1,5 @@
-
+import { TableUsers } from "../../components/TableUsers";
 
 export const UsersAdminPage = () => {
-
-  return  <h1>UsersAdminPage</h1>;
+  return <TableUsers />;
 };

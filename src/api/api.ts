@@ -171,17 +171,17 @@ export const getProfileMiddlewareUser = async (refreshToken: string) => {
 };
 
 export const getByIdUser = async (id: string) => {
-  const response = await axiosWithAuth.get<IUser>(`users${id}`);
+  const response = await axiosWithAuth.get<IUser>(`users/${id}`);
   return response.data;
 };
 
 export const updateUser = async (id: string, data: any) => {
-  const response = await axiosWithAuth.patch<IUser>(`users${id}`, data);
+  const response = await axiosWithAuth.patch<IUser>(`users/${id}`, data);
   return response.data;
 };
 
 export const deleteUser = async (id: string) => {
-  const response = await axiosWithAuth.delete<IUser>(`users${id}`);
+  const response = await axiosWithAuth.delete<IUser>(`users/${id}`);
   return response.data;
 };
 

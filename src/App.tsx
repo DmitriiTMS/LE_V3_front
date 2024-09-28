@@ -10,6 +10,8 @@ import {
   VideoPage,
   UsersAdminPage,
   ProtectedPage,
+  UserPage,
+  // LayoutAdmin
 } from "./lazy/lazy";
 import { paths, pathsManage } from "./constants/paths";
 
@@ -38,6 +40,7 @@ function App() {
             >
               <Route path={pathsManage.videos} element={<VideoAdminPage />} />
               <Route path={pathsManage.users} element={<UsersAdminPage />} />
+              <Route path={`${pathsManage.users}/:id`} element={<UserPage />} />
             </Route>
           </Route>
           <Route

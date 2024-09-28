@@ -30,5 +30,14 @@ export const ProtectedPage = lazy(() =>
   import("../components/ProtectedPage").then(({ ProtectedPage }) => ({ default: ProtectedPage }))
 );
 
+export const LayoutAdmin = lazy(() =>
+  import("../components/LayoutAdmin").then(({ LayoutAdmin }) => ({ default: LayoutAdmin }))
+);
+
+export const UserPage = lazy(() =>
+  import("../pages/UserPage").then(({ UserPage }) => ({ default: UserPage }))
+);
+
+
 
 
