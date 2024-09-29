@@ -9,7 +9,7 @@ export const LayoutAdmin = () => {
 
   if (user && user.role === "ADMIN") {
     return (
-      <div className="d-flex gap-5">
+      <div className="d-flex gap-5 mt-5">
         <div >
           <NavigationManage />
         </div>

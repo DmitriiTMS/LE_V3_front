@@ -26,59 +26,64 @@ export const TableUsers: FC<IUser> = () => {
   };
 
   return (
-    <Table bordered hover>
-      <thead>
-        <tr>
-          <th>№</th>
-          <th>Дата и время регистрации</th>
-          <th>Имя</th>
-          <th>Email</th>
-          <th>Instagram</th>
-          <th>Доступ к видео</th>
-          <th>Действия</th>
-        </tr>
-      </thead>
-      <tbody>
-        {users
-          ? users.length > 0 &&
-            users.map((user, index) => {
-              return (
-                <tr key={user.id}>
-                  <td>{index + 1}</td>
-                  <td>{convertDate(user.createdAt)}</td>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>{user.instagramName}</td>
-                  <td
-                    className={
-                      user.isHasPremium
-                        ? `${styles["bg-green"]}`
-                        : `${styles["bg-red"]}`
-                    }
-                  >
-                    {user.isHasPremium ? "Доступ разрешён" : "Доступ запрещён"}
-                  </td>
-                  <td>
-                    <Link to={`${user.id}`}>
-                      <Button className="mx-3" variant="warning">
-                        Редактировать
-                      </Button>
-                    </Link>
+    <>
+      <h1 className="mb-3"> Пользователи системы</h1>
+      <Table bordered hover>
+        <thead>
+          <tr>
+            <th>№</th>
+            <th>Дата и время регистрации</th>
+            <th>Имя</th>
+            <th>Email</th>
+            <th>Instagram</th>
+            <th>Доступ к видео</th>
+            <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users
+            ? users.length > 0 &&
+              users.map((user, index) => {
+                return (
+                  <tr key={user.id}>
+                    <td>{index + 1}</td>
+                    <td>{convertDate(user.createdAt)}</td>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.instagramName}</td>
+                    <td
+                      className={
+                        user.isHasPremium
+                          ? `${styles["bg-green"]}`
+                          : `${styles["bg-red"]}`
+                      }
+                    >
+                      {user.isHasPremium
+                        ? "Доступ разрешён"
+                        : "Доступ запрещён"}
+                    </td>
+                    <td>
+                      <Link to={`${user.id}`}>
+                        <Button className="mx-3" variant="warning">
+                          Редактировать
+                        </Button>
+                      </Link>
 
-                    {user.role !== "ADMIN" && (
-                      <Button
-                        variant="danger"
-                        onClick={() => deleteUser(user.id!)}
-                      >
-                        Удалить
-                      </Button>
-                    )}
-                  </td>
-                </tr>
-              );
-            })
-          : null}
-      </tbody>
-    </Table>
+                      {user.role !== "ADMIN" && (
+                        <Button
+                          variant="danger"
+                          onClick={() => deleteUser(user.id!)}
+                        >
+                          Удалить
+                        </Button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })
+            : null}
+        </tbody>
+      </Table>
+    </>
   );
 };

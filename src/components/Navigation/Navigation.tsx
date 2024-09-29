@@ -61,7 +61,7 @@ export const Navigation = () => {
             <Navbar.Brand>
               {!auth ? (
                 <li>
-                  <Link to={paths.login}>Вход</Link>
+                  <Link to={paths.login}>Вход/Регистрация</Link>
                 </li>
               ) : (
                 <Button variant="danger" onClick={logout}>
