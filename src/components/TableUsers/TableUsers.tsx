@@ -4,6 +4,10 @@ import { useDeleteUser } from "../../query/users/useDeleteUser";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 
+import { convertDate } from "../../helpers/data";
+
+import styles from "./TableUsers.module.css";
+
 interface IUser {
   id: string;
   createdAt: string;
@@ -15,10 +19,10 @@ interface IUser {
 
 export const TableUsers: FC<IUser> = () => {
   const { users } = useGetAllUsers();
-  const { mutate } = useDeleteUser();
+  const { mutateAsync } = useDeleteUser();
 
   const deleteUser = (id: string) => {
-    mutate(id);
+    mutateAsync(id);
   };
 
   return (
@@ -26,7 +30,7 @@ export const TableUsers: FC<IUser> = () => {
       <thead>
         <tr>
           <th>№</th>
-          <th>Дата регистрации</th>
+          <th>Дата и время регистрации</th>
           <th>Имя</th>
           <th>Email</th>
           <th>Instagram</th>
@@ -41,20 +45,26 @@ export const TableUsers: FC<IUser> = () => {
               return (
                 <tr key={user.id}>
                   <td>{index + 1}</td>
-                  <td>{user.createdAt}</td>
+                  <td>{convertDate(user.createdAt)}</td>
                   <td>{user.name}</td>
                   <td>{user.email}</td>
                   <td>{user.instagramName}</td>
-                  <td>
+                  <td
+                    className={
+                      user.isHasPremium
+                        ? `${styles["bg-green"]}`
+                        : `${styles["bg-red"]}`
+                    }
+                  >
                     {user.isHasPremium ? "Доступ разрешён" : "Доступ запрещён"}
                   </td>
                   <td>
                     <Link to={`${user.id}`}>
-                    <Button className="mx-3" variant="warning">
-                      Редактировать
-                    </Button>
+                      <Button className="mx-3" variant="warning">
+                        Редактировать
+                      </Button>
                     </Link>
-                   
+
                     {user.role !== "ADMIN" && (
                       <Button
                         variant="danger"

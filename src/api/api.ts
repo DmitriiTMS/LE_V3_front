@@ -107,6 +107,13 @@ export const deleteVideo = async (id: string) => {
 };
 
 // Users
+interface IUserDeleteObj {
+  name: string
+}
+
+interface IUserDelete {
+  user: {name: IUserDeleteObj}
+}
 
 interface IUser {
   id?: string;
@@ -181,8 +188,8 @@ export const updateUser = async (id: string, data: any) => {
 };
 
 export const deleteUser = async (id: string) => {
-  const response = await axiosWithAuth.delete<IUser>(`users/${id}`);
-  return response.data;
+  const response = await axiosWithAuth.delete<IUserDelete>(`users/${id}`);
+  return response.data.user;
 };
 
 // 3:29:23

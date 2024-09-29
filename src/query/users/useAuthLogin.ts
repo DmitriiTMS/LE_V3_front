@@ -18,7 +18,8 @@ export const useAuthLogin = () => {
       toast.success("Вы вошли в аккаунт");
       navigate(`/${paths.videos}`);
     },
-    onError: () => {
+    onError: (error: any) => {
+      toast.error(error.response.data.message);
       console.log("Произошла ошибка при входе");
     },
   });
